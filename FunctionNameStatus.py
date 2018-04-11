@@ -79,7 +79,11 @@ class FunctionNameStatusEventHandler(sublime_plugin.EventListener):
 
             # Look for any classes
             if Pref.display_class:
-                class_regions = view.find_by_selector('entity.name.type.class')
+                class_regions = view.find_by_selector('entity.name.class')
+                # Although ST now recommends you use the scope name without .type,
+                # there may be highlighters that still use the old convention
+                if not class_regions:
+                    class_regions = view.find_by_selector('entity.name.type.class')
                 for r in reversed(class_regions):
                     row, col = view.rowcol(r.begin())
                     if row <= region_row:
